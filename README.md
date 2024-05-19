@@ -2,4 +2,4 @@
 
 ## React + TypeScript + Vite
 
-### Backend Repo: [text](https://github.com/Level0-eth/task-tether-serve)
+### Backend Repo: [https://github.com/Level0-eth/task-tether-serve](https://github.com/Level0-eth/task-tether-serve)
