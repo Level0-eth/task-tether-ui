@@ -1,17 +1,10 @@
-import { LoginButton } from '@telegram-auth/react';
-
-import './App.css';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
-    <>
-      <div>
-        <h1>Login with Telegram</h1>
-        <div id='telegram-login-container'>
-          <LoginButton botUsername='TaskTether_bot' widgetVersion={22} />
-        </div>
-      </div>
-    </>
+    <div className='container'>
+      <LoginPage />
+    </div>
   );
 }
 

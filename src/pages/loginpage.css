@@ -1,0 +1,51 @@
+.login {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.login .logo {
+  position: relative;
+}
+
+.bg__lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url(../assets/lines.svg) center right;
+}
+
+.login > div {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login .logo img {
+  max-width: 221px;
+  height: fit-content;
+}
+
+.login .auth {
+  flex-direction: column;
+}
+
+.login .auth .auth__innner {
+  max-width: 330px;
+}
+
+.login .auth h2 {
+  font-size: 32px;
+  margin-bottom: 42px;
+  color: var(--primary-dark);
+}
+
+.login .logo .logo__inner,
+.login .auth .auth__innner {
+  height: 42%;
+}
+
+button.tgme_widget_login_button {
+  background: var(--primary-dark);
+}
