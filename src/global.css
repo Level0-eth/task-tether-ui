@@ -1,8 +1,16 @@
+:root {
+  --secondary-bg-color: #1212120d;
+}
+
 @font-face {
   font-family: 'Righteous';
   src: url('./assets/fonts/Righteous-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -11,6 +19,10 @@ body {
 
 :root {
   --primary-dark: #262626;
+  --white-color: #ffffff;
+  --light-grey-color: #22222280;
+  --dark-hover-color: #262626f0;
+  --input-focus-dark-color: #222222d9;
 }
 
 #root {
@@ -51,4 +63,33 @@ body {
   background: white;
   margin: auto;
   border-radius: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex.column {
+  flex-direction: column;
+}
+
+.flex.align-start {
+  align-items: start;
+}
+
+.input {
+  outline: none;
+  border: none;
+  background: var(--secondary-bg-color);
+  padding: 18px 27px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  color: var(--light-grey-color);
+  font-size: 14px;
+  font-family: 'Righteous';
+  width: 100%;
+}
+
+.input:focus {
+  color: var(--input-focus-dark-color);
 }

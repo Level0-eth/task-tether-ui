@@ -1,10 +1,10 @@
-.login {
+.join {
   width: 100%;
   height: 100%;
   display: flex;
 }
 
-.login .logo {
+.join .logo {
   position: relative;
 }
 
@@ -15,34 +15,34 @@
   background: url(../assets/lines.svg) center right;
 }
 
-.login > div {
+.join > div {
   width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login .logo img {
+.join .logo img {
   max-width: 221px;
   height: fit-content;
 }
 
-.login .auth {
+.join .auth {
   flex-direction: column;
 }
 
-.login .auth .auth__innner {
-  max-width: 330px;
+.join .auth .auth__innner {
+  width: 361px;
 }
 
-.login .auth h2 {
+.join .auth h2 {
   font-size: 32px;
   margin-bottom: 42px;
   color: var(--primary-dark);
 }
 
-.login .logo .logo__inner,
-.login .auth .auth__innner {
+.join .logo .logo__inner,
+.join .auth .auth__innner {
   height: 42%;
 }
 
