@@ -11,6 +11,15 @@ interface SingUpData {
   confirmPassword: string;
 }
 
+interface telegramData {
+  auth_date: number;
+  first_name: string;
+  hash: string;
+  id: number;
+  last_name: string;
+  photo_url: string;
+}
+
 const SignUpPage = () => {
   const [formData, setFormData] = useState<SingUpData>({
     userName: '',
@@ -63,15 +72,38 @@ const SignUpPage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false);
         console.log(data);
 
         if (data.message == 'user is already exits') {
           alert('User name already present! please choose different user name');
+          setLoading(false);
         } else if (window.Telegram) {
-          window.Telegram.Login.auth({ bot_id: 7291307734 }, () => {
-            console.log('test');
-          });
+          window.Telegram.Login.auth(
+            { bot_id: 7291307734 },
+            (user: telegramData) => {
+              const requestObj = JSON.stringify({ userId: formData.userName });
+
+              fetch('http://localhost:8080/v1/user/signup', {
+                method: 'POST',
+                headers: myHeaders,
+                body: requestObj,
+                redirect: 'follow',
+              })
+                .then((res) => {
+                  return res.json();
+                })
+                .then((data) => {
+                  // <Navigate to='/login' />
+                  console.log(data);
+                  setLoading(false);
+                })
+                .catch((err) => {
+                  console.log(err);
+                  setLoading(false);
+                });
+              console.log(user);
+            }
+          );
         }
       })
       .catch(() => {
