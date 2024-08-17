@@ -41,4 +41,4 @@ const ToasterProvider = ({ children }: ToasterProviderProps) => {
 };
 
 export default ToasterProvider;
-export type { ToasterContextType };
+export { ToasterContext };
