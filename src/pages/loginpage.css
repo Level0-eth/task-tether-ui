@@ -49,3 +49,10 @@
 button.tgme_widget_login_button {
   background: var(--primary-dark);
 }
+
+.error__message {
+  font-size: 12px;
+  color: rgb(252, 88, 88);
+  margin-bottom: 20px;
+  margin-top: -10px;
+}

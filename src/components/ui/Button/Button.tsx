@@ -5,12 +5,13 @@ interface ButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clickEvent: any;
   loading: boolean;
+  disabled: boolean;
 }
 
-const Button = ({ value, clickEvent, loading }: ButtonProps) => {
+const Button = ({ value, clickEvent, loading, disabled }: ButtonProps) => {
   return (
     <button
-      className={`button ${loading ? 'loading' : ''}`}
+      className={`button ${loading ? 'loading' : ''} ${!disabled ? 'disabled' : ''}`}
       onClick={clickEvent}
     >
       {value}

@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { LoginButton } from '@telegram-auth/react';
 
 import Button from '../components/ui/Button/Button';
+import { useToaster } from '../contexts/useToaster';
 
 import Logo from '../assets/logo.svg';
 
@@ -20,6 +21,9 @@ interface telegramData {
   photo_url: string;
 }
 
+const myHeaders = new Headers();
+myHeaders.append('Content-Type', 'application/json');
+
 const SignUpPage = () => {
   const [formData, setFormData] = useState<SingUpData>({
     userName: '',
@@ -27,89 +31,80 @@ const SignUpPage = () => {
     confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
+  const [isUserNameValid, setIsUserNameValid] = useState(false);
+  const addToast = useToaster();
 
-  const handleInputChange = (event: ChangeEvent<HTMLElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
+
+    if (target.name == 'userName' && target.value.trim().length > 5) {
+      const requestObj = JSON.stringify({ userId: target.value.trim() });
+
+      fetch('http://localhost:8080/v1/user/getUser', {
+        method: 'POST',
+        headers: myHeaders,
+        body: requestObj,
+        redirect: 'follow',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message == 'user is already exits') {
+            setIsUserNameValid(false);
+          } else {
+            setIsUserNameValid(true);
+          }
+        })
+        .catch(() => {
+          addToast('something went wrong', 'error');
+        });
+    } else if (target.name == 'userName') {
+      setIsUserNameValid(false);
+    }
 
     setFormData({
       ...formData,
-      [target.name]: target.value,
+      [target.name]: target.value.trim(),
     });
   };
 
   const submitData = (event: React.MouseEvent<MouseEvent>) => {
     event.preventDefault();
 
-    if (formData.userName == '') {
-      alert('plase create a user name');
-      return;
-    } else if (formData.userName.length < 3) {
-      alert('user name should be more than 5 words');
-      return;
-    } else if (formData.password == '') {
-      alert('plase create a password');
+    if (formData.password == '') {
+      addToast('plase create a password', 'error');
       return;
     } else if (formData.password.length < 8) {
-      alert('password should be more than 8 digits');
+      addToast('password should be more than 8 digits', 'error');
       return;
     } else if (formData.password !== formData.confirmPassword) {
-      alert('confirm password is not matching with password');
+      addToast('confirm password is not matching with password', 'error');
       return;
     }
 
     setLoading(true);
+    window.Telegram.Login.auth({ bot_id: 7291307734 }, (user: telegramData) => {
+      const requestObj = JSON.stringify({ userId: formData.userName });
 
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    const requestObj = JSON.stringify({ userId: formData.userName });
-
-    fetch('http://localhost:8080/v1/user/getUser', {
-      method: 'POST',
-      headers: myHeaders,
-      body: requestObj,
-      redirect: 'follow',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-
-        if (data.message == 'user is already exits') {
-          alert('User name already present! please choose different user name');
-          setLoading(false);
-        } else if (window.Telegram) {
-          window.Telegram.Login.auth(
-            { bot_id: 7291307734 },
-            (user: telegramData) => {
-              const requestObj = JSON.stringify({ userId: formData.userName });
-
-              fetch('http://localhost:8080/v1/user/signup', {
-                method: 'POST',
-                headers: myHeaders,
-                body: requestObj,
-                redirect: 'follow',
-              })
-                .then((res) => {
-                  return res.json();
-                })
-                .then((data) => {
-                  // <Navigate to='/login' />
-                  console.log(data);
-                  setLoading(false);
-                })
-                .catch((err) => {
-                  console.log(err);
-                  setLoading(false);
-                });
-              console.log(user);
-            }
-          );
-        }
+      fetch('http://localhost:8080/v1/user/signup', {
+        method: 'POST',
+        headers: myHeaders,
+        body: requestObj,
+        redirect: 'follow',
       })
-      .catch(() => {
-        setLoading(false);
-        alert('error');
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          // <Navigate to='/login' />
+          console.log(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+      console.log(user);
+    });
   };
 
   return (
@@ -132,6 +127,11 @@ const SignUpPage = () => {
                 value={formData.userName}
                 onChange={handleInputChange}
               />
+              {!isUserNameValid && formData.userName.length > 6 ? (
+                <p className='error__message'>username is not avaiable</p>
+              ) : (
+                ''
+              )}
               <input
                 className='input'
                 type='password'
@@ -154,6 +154,7 @@ const SignUpPage = () => {
                 value='Sign Up'
                 clickEvent={submitData}
                 loading={loading}
+                disabled={isUserNameValid}
               />
             </form>
             <div style={{ display: 'none' }}>
