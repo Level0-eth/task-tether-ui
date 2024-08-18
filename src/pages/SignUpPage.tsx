@@ -3,7 +3,7 @@ import { LoginButton } from '@telegram-auth/react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../components/ui/Button/Button';
-import { useToaster } from '../contexts/useToaster';
+import { useToaster } from '../hooks/useToaster';
 
 import Logo from '../assets/logo.svg';
 

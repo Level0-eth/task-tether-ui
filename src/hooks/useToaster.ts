@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { ToasterContext } from './ToasterContext';
+import { ToasterContext } from '../contexts/ToasterContext';
 
 export const useToaster = () => {
   const context = useContext(ToasterContext);
