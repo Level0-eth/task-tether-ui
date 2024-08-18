@@ -12,13 +12,18 @@ interface SingUpData {
   confirmPassword: string;
 }
 
-interface telegramData {
+interface TelegramData {
   auth_date: number;
   first_name: string;
   hash: string;
   id: number;
   last_name: string;
   photo_url: string;
+}
+
+interface UserName {
+  loading: boolean;
+  valid: boolean;
 }
 
 const myHeaders = new Headers();
@@ -31,40 +36,57 @@ const SignUpPage = () => {
     confirmPassword: '',
   });
   const [loading, setLoading] = useState(false);
-  const [isUserNameValid, setIsUserNameValid] = useState(false);
+  const [isUserNameValid, setIsUserNameValid] = useState<UserName>({
+    loading: false,
+    valid: false,
+  });
   const addToast = useToaster();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
 
     if (target.name == 'userName' && target.value.trim().length > 5) {
-      const requestObj = JSON.stringify({ userId: target.value.trim() });
-
-      fetch('http://localhost:8080/v1/user/getUser', {
-        method: 'POST',
-        headers: myHeaders,
-        body: requestObj,
-        redirect: 'follow',
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message == 'user is already exits') {
-            setIsUserNameValid(false);
-          } else {
-            setIsUserNameValid(true);
-          }
-        })
-        .catch(() => {
-          addToast('something went wrong', 'error');
-        });
+      validateUserName(target);
     } else if (target.name == 'userName') {
-      setIsUserNameValid(false);
+      setIsUserNameValid(() => {
+        return { loading: false, valid: false };
+      });
     }
 
     setFormData({
       ...formData,
       [target.name]: target.value.trim(),
     });
+  };
+
+  const validateUserName = (target: HTMLInputElement) => {
+    const requestObj = JSON.stringify({ userId: target.value.trim() });
+
+    setIsUserNameValid(() => {
+      return { loading: true, valid: false };
+    });
+
+    fetch('http://localhost:8080/v1/user/getUser', {
+      method: 'POST',
+      headers: myHeaders,
+      body: requestObj,
+      redirect: 'follow',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == 'user is already exits') {
+          setIsUserNameValid(() => {
+            return { loading: false, valid: false };
+          });
+        } else {
+          setIsUserNameValid(() => {
+            return { loading: false, valid: true };
+          });
+        }
+      })
+      .catch(() => {
+        addToast('something went wrong', 'error');
+      });
   };
 
   const submitData = (event: React.MouseEvent<MouseEvent>) => {
@@ -82,7 +104,7 @@ const SignUpPage = () => {
     }
 
     setLoading(true);
-    window.Telegram.Login.auth({ bot_id: 7291307734 }, (user: telegramData) => {
+    window.Telegram.Login.auth({ bot_id: 7291307734 }, (user: TelegramData) => {
       const requestObj = JSON.stringify({ userId: formData.userName });
 
       fetch('http://localhost:8080/v1/user/signup', {
@@ -107,6 +129,18 @@ const SignUpPage = () => {
     });
   };
 
+  const checkUserName = () => {
+    if (isUserNameValid.loading) {
+      return 'loading';
+    } else if (isUserNameValid.valid) {
+      return 'valid';
+    } else if (formData.userName.length > 6) {
+      return 'invalid';
+    }
+
+    return '';
+  };
+
   return (
     <div className='join'>
       <div className='logo bg__lines'>
@@ -119,43 +153,52 @@ const SignUpPage = () => {
           <h2>Sign Up</h2>
           <div className='flex column align-start'>
             <form>
-              <input
-                className='input'
-                type='text'
-                placeholder='Create User Name'
-                name='userName'
-                value={formData.userName}
-                onChange={handleInputChange}
-              />
+              <div className={`input__wrapper ${checkUserName()}`}>
+                <input
+                  className='input'
+                  type='text'
+                  placeholder='Create User Name'
+                  name='userName'
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                />
+              </div>
               {!isUserNameValid && formData.userName.length > 6 ? (
                 <p className='error__message'>username is not avaiable</p>
               ) : (
                 ''
               )}
-              <input
-                className='input'
-                type='password'
-                placeholder='Create Password'
-                name='password'
-                autoComplete='true'
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-              <input
-                className='input'
-                type='password'
-                placeholder='Confirm Password'
-                name='confirmPassword'
-                autoComplete='true'
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-              />
+              <div className='input__wrapper'>
+                <input
+                  className='input'
+                  type='password'
+                  placeholder='Create Password'
+                  name='password'
+                  autoComplete='true'
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className='input__wrapper'>
+                <input
+                  className='input'
+                  type='password'
+                  placeholder='Confirm Password'
+                  name='confirmPassword'
+                  autoComplete='true'
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                />
+              </div>
               <Button
-                value='Sign Up'
+                value='Sign Up Using Telegram'
                 clickEvent={submitData}
                 loading={loading}
-                disabled={isUserNameValid}
+                disabled={isUserNameValid.valid}
               />
+              <p className='note'>
+                Please clear the cache to use different Telegram account.
+              </p>
             </form>
             <div style={{ display: 'none' }}>
               <LoginButton botUsername='TaskTether_bot' widgetVersion={22} />

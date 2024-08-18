@@ -56,3 +56,9 @@ button.tgme_widget_login_button {
   margin-bottom: 20px;
   margin-top: -10px;
 }
+
+.note {
+  font-size: 14px;
+  margin-top: 15px;
+  color: #262626;
+}
