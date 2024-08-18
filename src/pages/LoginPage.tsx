@@ -1,12 +1,34 @@
-import { LoginButton, TelegramAuthData } from '@telegram-auth/react';
+import { ChangeEvent, useState } from 'react';
+
+import Button from '../components/ui/Button/Button';
 
 import './loginpage.css';
 
 import Logo from '../assets/logo.svg';
 
+interface LoginData {
+  userName: string;
+  password: string;
+}
+
 const LoginPage = () => {
-  const handleTelegramLogin = (data: TelegramAuthData) => {
-    console.log(data);
+  const [formData, setFormData] = useState<LoginData>({
+    userName: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const target = event.target as HTMLInputElement;
+
+    setFormData({
+      ...formData,
+      [target.name]: target.value.trim(),
+    });
+  };
+
+  const login = () => {
+    setLoading(true);
   };
 
   return (
@@ -18,13 +40,33 @@ const LoginPage = () => {
       </div>
       <div className='auth'>
         <div className='auth__innner'>
-          <h2>Login Using Your Telegram Account</h2>
-          <LoginButton
-            botUsername='TaskTether_bot'
-            widgetVersion={22}
-            onAuthCallback={handleTelegramLogin}
-            authCallbackUrl='/test'
-          />
+          <h2>Login</h2>
+          <div className='flex column'>
+            <form>
+              <div className='input__wrapper'>
+                <input
+                  className='input'
+                  type='text'
+                  placeholder='Enter User Name'
+                  name='userName'
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className='input__wrapper'>
+                <input
+                  className='input'
+                  type='password'
+                  placeholder='Enter Password'
+                  name='password'
+                  autoComplete='true'
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <Button value='Login' clickEvent={login} loading={loading} />
+            </form>
+          </div>
         </div>
       </div>
     </div>
