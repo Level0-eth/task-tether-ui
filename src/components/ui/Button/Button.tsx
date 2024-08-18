@@ -5,7 +5,7 @@ interface ButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clickEvent: any;
   loading: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const Button = ({ value, clickEvent, loading, disabled }: ButtonProps) => {
