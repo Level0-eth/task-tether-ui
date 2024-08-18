@@ -114,6 +114,7 @@ const SignUpPage = () => {
         photoUrl: user.photo_url,
         authDate: user.auth_date,
         chatID: user.id,
+        password: formData.password,
       });
 
       fetch('http://localhost:8080/v1/user/signup', {
@@ -140,7 +141,6 @@ const SignUpPage = () => {
           addToast('something went wrong', 'error');
           setLoading(false);
         });
-      console.log(user);
     });
   };
 
