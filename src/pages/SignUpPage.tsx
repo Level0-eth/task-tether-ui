@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { LoginButton } from '@telegram-auth/react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../components/ui/Button/Button';
 import { useToaster } from '../contexts/useToaster';
@@ -41,6 +42,7 @@ const SignUpPage = () => {
     valid: false,
   });
   const addToast = useToaster();
+  const nagigate = useNavigate();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
@@ -105,7 +107,14 @@ const SignUpPage = () => {
 
     setLoading(true);
     window.Telegram.Login.auth({ bot_id: 7291307734 }, (user: TelegramData) => {
-      const requestObj = JSON.stringify({ userId: formData.userName });
+      const requestObj = JSON.stringify({
+        userId: formData.userName,
+        name: user.first_name,
+        lastName: user.last_name,
+        photoUrl: user.photo_url,
+        authDate: user.auth_date,
+        chatID: user.id,
+      });
 
       fetch('http://localhost:8080/v1/user/signup', {
         method: 'POST',
@@ -113,16 +122,22 @@ const SignUpPage = () => {
         body: requestObj,
         redirect: 'follow',
       })
-        .then((res) => {
+        .then(async (res) => {
+          if (!res.ok) {
+            return res.json().then((err) => {
+              throw new Error(err.message || 'Something went wrong');
+            });
+          }
+
           return res.json();
         })
-        .then((data) => {
-          // <Navigate to='/login' />
-          console.log(data);
+        .then(() => {
+          addToast('Registration Completed', 'success');
+          nagigate('/login');
           setLoading(false);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          addToast('something went wrong', 'error');
           setLoading(false);
         });
       console.log(user);
