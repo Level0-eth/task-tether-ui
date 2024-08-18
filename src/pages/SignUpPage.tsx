@@ -163,11 +163,6 @@ const SignUpPage = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              {!isUserNameValid && formData.userName.length > 6 ? (
-                <p className='error__message'>username is not avaiable</p>
-              ) : (
-                ''
-              )}
               <div className='input__wrapper'>
                 <input
                   className='input'
