@@ -5,18 +5,23 @@ import Button from '../components/ui/Button/Button';
 import './loginpage.css';
 
 import Logo from '../assets/logo.svg';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginData {
   userName: string;
   password: string;
 }
 
+const myHeaders = new Headers();
+myHeaders.append('Content-Type', 'application/json');
+
 const LoginPage = () => {
   const [formData, setFormData] = useState<LoginData>({
     userName: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
@@ -27,8 +32,35 @@ const LoginPage = () => {
     });
   };
 
-  const login = () => {
-    setLoading(true);
+  const login = (event: React.MouseEvent) => {
+    event.preventDefault();
+    // setLoading(true);
+    const requestObj = JSON.stringify({
+      userId: formData.userName,
+      password: formData.password,
+    });
+
+    fetch('http://localhost:8080/v1/user/login', {
+      method: 'POST',
+      headers: myHeaders,
+      body: requestObj,
+      redirect: 'follow',
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Something went wrong');
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem('token', data.token);
+        navigate('/');
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -64,7 +96,7 @@ const LoginPage = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <Button value='Login' clickEvent={login} loading={loading} />
+              <Button value='Login' clickEvent={login} />
             </form>
           </div>
         </div>
