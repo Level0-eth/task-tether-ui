@@ -42,7 +42,7 @@ const SignUpPage = () => {
     valid: false,
   });
   const addToast = useToaster();
-  const nagigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
@@ -134,7 +134,7 @@ const SignUpPage = () => {
         })
         .then(() => {
           addToast('Registration Completed', 'success');
-          nagigate('/login');
+          navigate('/login');
           setLoading(false);
         })
         .catch(() => {
