@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Header from '../components/Header/Header';
+
 interface UserInfo {
   name: string;
   chatID: string;
+  photoUrl: string;
 }
 
 const Dashboard = () => {
@@ -38,9 +41,9 @@ const Dashboard = () => {
   }, [navigate]);
 
   return (
-    <div>
-      {user && user.name} :: {user && user.chatID}
-    </div>
+    <>
+      <Header user={user} />
+    </>
   );
 };
 

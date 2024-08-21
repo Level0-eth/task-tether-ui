@@ -101,7 +101,8 @@ body {
 
 .input__wrapper.loading::after,
 .input__wrapper.valid::after,
-.input__wrapper.invalid::after {
+.input__wrapper.invalid::after,
+.input__wrapper.search::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -121,6 +122,12 @@ body {
 .input__wrapper.invalid::after {
   background: url(./assets/invalid.png) no-repeat;
   background-size: cover;
+}
+
+.input__wrapper.search::after {
+  background: url(./assets/search.svg) no-repeat;
+  background-size: cover;
+  right: 27px;
 }
 
 .toaster {

@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.header .logo {
+  padding: 25px 80px 25px 22px;
+  border-right: 1px solid rgba(0, 0, 0, 0.09);
+}
+
+.header .logo img {
+  max-width: 121px;
+}
+
+.header .input__wrapper {
+  width: 480px;
+  margin-bottom: 0;
+}
+
+.header .input__wrapper input {
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  padding: 13px 24px;
+}
+
+.header .header__options {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.header .header__options .profile {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.header .header__options .profile img {
+  width: 100%;
+  height: 100%;
+}
