@@ -1,5 +1,7 @@
 import './button.css';
 
+import LoadingSvg from '../../../assets/loading.gif';
+
 interface ButtonProps {
   value: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +16,8 @@ const Button = ({ value, clickEvent, loading, disabled }: ButtonProps) => {
       className={`button ${loading ? 'loading' : ''} ${!disabled && disabled != disabled ? 'disabled' : ''}`}
       onClick={clickEvent}
     >
-      {value}
+      {loading ? <img src={LoadingSvg} /> : ''}
+      <span>{value}</span>
     </button>
   );
 };

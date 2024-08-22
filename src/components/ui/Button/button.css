@@ -7,6 +7,16 @@
   border-radius: 5px;
   background: var(--primary-dark);
   color: var(--white-color);
+  position: relative;
+}
+
+.button img {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .button:hover {
@@ -16,6 +26,10 @@
 .button.loading {
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.button.loading span {
+  opacity: 0;
 }
 
 .button.disabled {
