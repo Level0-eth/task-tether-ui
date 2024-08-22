@@ -137,6 +137,11 @@ body {
   z-index: 9999;
 }
 
+.toaster {
+  top: 35px;
+  right: 35px;
+}
+
 .toast {
   padding: 10px 20px;
   margin: 5px;
