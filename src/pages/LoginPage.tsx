@@ -1,11 +1,11 @@
 import { ChangeEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../components/ui/Button/Button';
 
 import './loginpage.css';
 
 import Logo from '../assets/logo.svg';
-import { useNavigate } from 'react-router-dom';
 
 interface LoginData {
   userName: string;
@@ -97,6 +97,9 @@ const LoginPage = () => {
                 />
               </div>
               <Button value='Login' clickEvent={login} />
+              <p className='note'>
+                Don't have an account? <Link to='/signup'>Signup</Link>
+              </p>
             </form>
           </div>
         </div>

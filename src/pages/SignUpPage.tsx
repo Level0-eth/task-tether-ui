@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { LoginButton } from '@telegram-auth/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../components/ui/Button/Button';
 import { useToaster } from '../hooks/useToaster';
@@ -206,6 +206,9 @@ const SignUpPage = () => {
                 loading={loading}
                 disabled={isUserNameValid.valid}
               />
+              <p className='note'>
+                Already have an account? <Link to='/login'>Login</Link>
+              </p>
               <p className='note'>
                 Please clear the cache to use different Telegram account.
               </p>
