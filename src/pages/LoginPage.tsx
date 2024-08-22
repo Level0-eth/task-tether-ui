@@ -6,6 +6,7 @@ import Button from '../components/ui/Button/Button';
 import './loginpage.css';
 
 import Logo from '../assets/logo.svg';
+import { useToaster } from '../hooks/useToaster';
 
 interface LoginData {
   userName: string;
@@ -20,8 +21,9 @@ const LoginPage = () => {
     userName: '',
     password: '',
   });
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const addToast = useToaster();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
@@ -34,7 +36,7 @@ const LoginPage = () => {
 
   const login = (event: React.MouseEvent) => {
     event.preventDefault();
-    // setLoading(true);
+    setLoading(true);
     const requestObj = JSON.stringify({
       userId: formData.userName,
       password: formData.password,
@@ -55,11 +57,13 @@ const LoginPage = () => {
       })
       .then((data) => {
         localStorage.setItem('token', data.token);
+        addToast('Welcome Boss!!', 'success');
+        setLoading(false);
         navigate('/');
-        console.log(data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        setLoading(false);
+        addToast('Something Went Wrong!!', 'error');
       });
   };
 
@@ -96,7 +100,7 @@ const LoginPage = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <Button value='Login' clickEvent={login} />
+              <Button value='Login' clickEvent={login} loading={loading} />
               <p className='note'>
                 Don't have an account? <Link to='/signup'>Signup</Link>
               </p>
