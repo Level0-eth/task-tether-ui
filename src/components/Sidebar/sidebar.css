@@ -1,0 +1,23 @@
+.main {
+  height: calc(100% - 85.4px);
+}
+
+.sidebar {
+  width: 224px;
+  border-right: 1px solid rgba(0, 0, 0, 0.09);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar button {
+  display: flex;
+  width: 100%;
+  padding: 13px;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 5px;
+  background: none;
+  cursor: pointer;
+}

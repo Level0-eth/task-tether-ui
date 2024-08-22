@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Header from '../components/Header/Header';
+import Sidebar from '../components/Sidebar/Sidebar';
 
 interface UserInfo {
   name: string;
@@ -43,6 +44,9 @@ const Dashboard = () => {
   return (
     <>
       <Header user={user} />
+      <div className='main flex'>
+        <Sidebar />
+      </div>
     </>
   );
 };
