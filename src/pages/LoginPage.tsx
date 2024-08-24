@@ -1,20 +1,18 @@
 import { ChangeEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useToaster } from '../hooks/useToaster';
+import apiRequest from '../utils/apiRequest';
 import Button from '../components/ui/Button/Button';
 
 import './loginpage.css';
 
 import Logo from '../assets/logo.svg';
-import { useToaster } from '../hooks/useToaster';
 
 interface LoginData {
   userName: string;
   password: string;
 }
-
-const myHeaders = new Headers();
-myHeaders.append('Content-Type', 'application/json');
 
 const LoginPage = () => {
   const [formData, setFormData] = useState<LoginData>({
@@ -34,37 +32,29 @@ const LoginPage = () => {
     });
   };
 
-  const login = (event: React.MouseEvent) => {
+  const login = async (event: React.MouseEvent) => {
     event.preventDefault();
     setLoading(true);
-    const requestObj = JSON.stringify({
+
+    const requestObj = {
       userId: formData.userName,
       password: formData.password,
-    });
+    };
 
-    fetch('http://localhost:8080/v1/user/login', {
-      method: 'POST',
-      headers: myHeaders,
-      body: requestObj,
-      redirect: 'follow',
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Something went wrong');
-        }
+    try {
+      const data = await apiRequest(
+        'http://localhost:8080/v1/user/login',
+        requestObj
+      );
 
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem('token', data.token);
-        addToast('Welcome Boss!!', 'success');
-        setLoading(false);
-        navigate('/');
-      })
-      .catch(() => {
-        setLoading(false);
-        addToast('Something Went Wrong!!', 'error');
-      });
+      localStorage.setItem('token', data.token);
+      addToast('Welcome Boss!!', 'success');
+      setLoading(false);
+      navigate('/');
+    } catch {
+      setLoading(false);
+      addToast('Something Went Wrong!!', 'error');
+    }
   };
 
   return (
