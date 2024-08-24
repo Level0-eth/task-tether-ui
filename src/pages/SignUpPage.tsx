@@ -61,34 +61,36 @@ const SignUpPage = () => {
     });
   };
 
-  const validateUserName = (target: HTMLInputElement) => {
+  const validateUserName = async (target: HTMLInputElement) => {
     const requestObj = JSON.stringify({ userId: target.value.trim() });
 
     setIsUserNameValid(() => {
       return { loading: true, valid: false };
     });
 
-    fetch('http://localhost:8080/v1/user/getUser', {
-      method: 'POST',
-      headers: myHeaders,
-      body: requestObj,
-      redirect: 'follow',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message == 'user is already exits') {
-          setIsUserNameValid(() => {
-            return { loading: false, valid: false };
-          });
-        } else {
-          setIsUserNameValid(() => {
-            return { loading: false, valid: true };
-          });
-        }
-      })
-      .catch(() => {
-        addToast('something went wrong', 'error');
+    try {
+      const response = await fetch('http://localhost:8080/v1/user/getUser', {
+        method: 'POST',
+        headers: myHeaders,
+        body: requestObj,
+        redirect: 'follow',
       });
+
+      if (response.ok) {
+        setIsUserNameValid(() => {
+          return { loading: false, valid: false };
+        });
+      } else {
+        setIsUserNameValid(() => {
+          return { loading: false, valid: true };
+        });
+      }
+    } catch {
+      setIsUserNameValid(() => {
+        return { loading: false, valid: false };
+      });
+      addToast('Please Check Your Internet Connection', 'error');
+    }
   };
 
   const submitData = (event: React.MouseEvent<MouseEvent>) => {
