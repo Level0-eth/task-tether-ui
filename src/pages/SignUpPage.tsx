@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../components/ui/Button/Button';
 import { useToaster } from '../hooks/useToaster';
+import apiRequest from '../utils/apiRequest';
 
 import Logo from '../assets/logo.svg';
 
@@ -26,9 +27,6 @@ interface UserName {
   loading: boolean;
   valid: boolean;
 }
-
-const myHeaders = new Headers();
-myHeaders.append('Content-Type', 'application/json');
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState<SingUpData>({
@@ -62,26 +60,24 @@ const SignUpPage = () => {
   };
 
   const validateUserName = async (target: HTMLInputElement) => {
-    const requestObj = JSON.stringify({ userId: target.value.trim() });
+    const requestObj = { userId: target.value.trim() };
 
     setIsUserNameValid({ loading: true, valid: false });
 
     try {
-      const response = await fetch('http://localhost:8080/v1/user/getUser', {
-        method: 'POST',
-        headers: myHeaders,
-        body: requestObj,
-        redirect: 'follow',
-      });
+      const data = await apiRequest(
+        'http://localhost:8080/v1/user/getUser',
+        requestObj
+      );
 
-      if (response.ok) {
-        setIsUserNameValid({ loading: false, valid: false });
-      } else {
+      if (data.message == 'user not found') {
         setIsUserNameValid({ loading: false, valid: true });
+      } else {
+        setIsUserNameValid({ loading: false, valid: false });
       }
     } catch {
       setIsUserNameValid({ loading: false, valid: false });
-      addToast('Please Check Your Internet Connection', 'error');
+      addToast('Something Went Wrong', 'error');
     }
   };
 
@@ -100,42 +96,33 @@ const SignUpPage = () => {
     }
 
     setLoading(true);
-    window.Telegram.Login.auth({ bot_id: 7291307734 }, (user: TelegramData) => {
-      const requestObj = JSON.stringify({
-        userId: formData.userName,
-        name: user.first_name,
-        lastName: user.last_name,
-        photoUrl: user.photo_url,
-        authDate: user.auth_date,
-        chatID: user.id,
-        password: formData.password,
-      });
 
-      fetch('http://localhost:8080/v1/user/signup', {
-        method: 'POST',
-        headers: myHeaders,
-        body: requestObj,
-        redirect: 'follow',
-      })
-        .then(async (res) => {
-          if (!res.ok) {
-            return res.json().then((err) => {
-              throw new Error(err.message || 'Something went wrong');
-            });
-          }
+    window.Telegram.Login.auth(
+      { bot_id: 7291307734 },
+      async (user: TelegramData) => {
+        const requestObj = {
+          userId: formData.userName,
+          name: user.first_name,
+          lastName: user.last_name,
+          photoUrl: user.photo_url,
+          authDate: user.auth_date,
+          chatID: user.id,
+          password: formData.password,
+        };
 
-          return res.json();
-        })
-        .then(() => {
+        try {
+          console.log(requestObj);
+          await apiRequest('http://localhost:8080/v1/user/signup', requestObj);
+
           addToast('Registration Completed', 'success');
           navigate('/login');
           setLoading(false);
-        })
-        .catch(() => {
+        } catch {
           addToast('something went wrong', 'error');
           setLoading(false);
-        });
-    });
+        }
+      }
+    );
   };
 
   const checkUserName = () => {
