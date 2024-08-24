@@ -64,9 +64,7 @@ const SignUpPage = () => {
   const validateUserName = async (target: HTMLInputElement) => {
     const requestObj = JSON.stringify({ userId: target.value.trim() });
 
-    setIsUserNameValid(() => {
-      return { loading: true, valid: false };
-    });
+    setIsUserNameValid({ loading: true, valid: false });
 
     try {
       const response = await fetch('http://localhost:8080/v1/user/getUser', {
@@ -77,18 +75,12 @@ const SignUpPage = () => {
       });
 
       if (response.ok) {
-        setIsUserNameValid(() => {
-          return { loading: false, valid: false };
-        });
+        setIsUserNameValid({ loading: false, valid: false });
       } else {
-        setIsUserNameValid(() => {
-          return { loading: false, valid: true };
-        });
+        setIsUserNameValid({ loading: false, valid: true });
       }
     } catch {
-      setIsUserNameValid(() => {
-        return { loading: false, valid: false };
-      });
+      setIsUserNameValid({ loading: false, valid: false });
       addToast('Please Check Your Internet Connection', 'error');
     }
   };
