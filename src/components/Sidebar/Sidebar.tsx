@@ -1,30 +1,18 @@
+import Dropdown from '../ui/Dropdown/Dropdown';
+
 import './sidebar.css';
 
-const SIDEBAR_OPTIONS = [
-  {
-    id: 'sidebar__dashboard',
-    name: 'Dashboard',
-  },
-  {
-    id: 'sidebar__calender',
-    name: 'Calender',
-  },
-  {
-    id: 'sidebar__profile',
-    name: 'Profile',
-  },
-  {
-    id: 'sidebar__settings',
-    name: 'Settings',
-  },
+const ListOptions = [
+  { id: 'study', name: 'Study', selected: true },
+  { id: 'work', name: 'Work', selected: false },
+  { id: 'enjoy', name: 'Enjoy', selected: false },
 ];
 
 const Sidebar = () => {
   return (
     <div className='sidebar'>
-      {SIDEBAR_OPTIONS.map((option) => {
-        return <button key={option.id}>{option.name}</button>;
-      })}
+      <p className='sm-heading'>Lists</p>
+      <Dropdown values={ListOptions} />
     </div>
   );
 };
