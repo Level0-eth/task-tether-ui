@@ -34,6 +34,18 @@ const LoginPage = () => {
 
   const login = async (event: React.MouseEvent) => {
     event.preventDefault();
+
+    if (formData.userName.trim().length <= 5) {
+      addToast('User name must be more than 5 digits', 'error');
+      return;
+    } else if (formData.password == '') {
+      addToast('plase enter a password', 'error');
+      return;
+    } else if (formData.password.length < 8) {
+      addToast('password should be more than 8 digits', 'error');
+      return;
+    }
+
     setLoading(true);
 
     const requestObj = {
