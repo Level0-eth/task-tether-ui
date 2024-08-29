@@ -54,10 +54,7 @@ const LoginPage = () => {
     };
 
     try {
-      const data = await apiRequest(
-        'http://localhost:8080/v1/user/login',
-        requestObj
-      );
+      const data = await apiRequest('/v1/user/login', requestObj);
 
       localStorage.setItem('token', data.token);
       addToast('Welcome Boss!!', 'success');

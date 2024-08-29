@@ -1,8 +1,8 @@
 const apiRequest = async (
   url: string,
   body: object | null = null,
-  method = 'POST',
-  headers = {}
+  headers = {},
+  method = 'POST'
 ) => {
   const myHeaders = new Headers({
     'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ const apiRequest = async (
   const requestBody = body ? JSON.stringify(body) : null;
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch('http://localhost:8080' + url, {
       method,
       headers: myHeaders,
       body: requestBody,

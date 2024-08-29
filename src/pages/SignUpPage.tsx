@@ -112,7 +112,7 @@ const SignUpPage = () => {
 
         try {
           console.log(requestObj);
-          await apiRequest('http://localhost:8080/v1/user/signup', requestObj);
+          await apiRequest('/v1/user/signup', requestObj);
 
           addToast('Registration Completed', 'success');
           navigate('/login');

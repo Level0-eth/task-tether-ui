@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
+import apiRequest from '../utils/apiRequest';
+import { useToaster } from '../hooks/useToaster';
 
 interface UserInfo {
   name: string;
@@ -12,34 +13,31 @@ interface UserInfo {
 
 const Dashboard = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
-  const navigate = useNavigate();
+  const addToast = useToaster();
+
+  const getInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const data = await apiRequest(
+        '/v1/user/info',
+        null,
+        {
+          Authorization: 'Bearer ' + token,
+        },
+        'GET'
+      );
+
+      setUser(data.match);
+    } catch {
+      addToast('something went wrong', 'error');
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', 'Bearer ' + token);
-
-    const requestOptions: RequestInit = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
-    fetch('http://localhost:8080/v1/user/info', requestOptions)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Token is invalid');
-        }
-        return res.json();
-      })
-      .then((result) => {
-        setUser(result.match);
-      })
-      .catch(() => {
-        localStorage.removeItem('token');
-        navigate('/login');
-      });
-  }, [navigate]);
+    getInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
