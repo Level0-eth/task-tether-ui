@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
 import apiRequest from '../utils/apiRequest';
 import { useToaster } from '../hooks/useToaster';
-import { useNavigate } from 'react-router-dom';
 
 interface UserInfo {
   name: string;
@@ -17,30 +17,30 @@ const Dashboard = () => {
   const addToast = useToaster();
   const navigate = useNavigate();
 
-  const getInfo = async () => {
-    try {
-      const token = localStorage.getItem('token');
-
-      const data = await apiRequest(
-        '/v1/user/info',
-        null,
-        {
-          Authorization: 'Bearer ' + token,
-        },
-        'GET'
-      );
-
-      setUser(data.match);
-    } catch {
-      navigate('/login');
-      addToast('something went wrong', 'error');
-    }
-  };
-
   useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        if (!token) {
+          throw new Error('No token found');
+        }
+
+        const data = await apiRequest('/v1/user/info', null, headers, 'GET');
+
+        if (!data || !data.match) {
+          throw new Error('Invalid user data');
+        }
+
+        setUser(data.match);
+      } catch {
+        navigate('/login');
+        addToast('something went wrong', 'error');
+      }
+    };
     getInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigate, addToast]);
 
   return (
     <>
