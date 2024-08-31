@@ -65,10 +65,7 @@ const SignUpPage = () => {
     setIsUserNameValid({ loading: true, valid: false });
 
     try {
-      const data = await apiRequest(
-        'http://localhost:8080/v1/user/getUser',
-        requestObj
-      );
+      const data = await apiRequest('/v1/user/getUser', requestObj);
 
       if (data.message == 'user not found') {
         setIsUserNameValid({ loading: false, valid: true });
