@@ -4,6 +4,7 @@ import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
 import apiRequest from '../utils/apiRequest';
 import { useToaster } from '../hooks/useToaster';
+import { useNavigate } from 'react-router-dom';
 
 interface UserInfo {
   name: string;
@@ -14,6 +15,7 @@ interface UserInfo {
 const Dashboard = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const addToast = useToaster();
+  const navigate = useNavigate();
 
   const getInfo = async () => {
     try {
@@ -30,6 +32,7 @@ const Dashboard = () => {
 
       setUser(data.match);
     } catch {
+      navigate('/login');
       addToast('something went wrong', 'error');
     }
   };
