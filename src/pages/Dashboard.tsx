@@ -47,6 +47,12 @@ const Dashboard = () => {
       <Header user={user} />
       <div className='main flex'>
         <Sidebar />
+        <main
+          className='flex justify-center align-center'
+          style={{ width: 'calc(100% - 224px)' }}
+        >
+          Create a list to get started
+        </main>
       </div>
     </>
   );

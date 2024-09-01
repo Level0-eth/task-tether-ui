@@ -82,6 +82,14 @@ body {
   align-items: start;
 }
 
+.flex.justify-center {
+  justify-content: center;
+}
+
+.flex.align-center {
+  align-items: center;
+}
+
 .input__wrapper {
   margin-bottom: 20px;
 }

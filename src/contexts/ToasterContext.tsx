@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 
 interface ToasterProviderProps {
   children: React.ReactNode;
@@ -17,14 +17,17 @@ const ToasterContext = createContext<ToasterContextType | undefined>(undefined);
 const ToasterProvider = ({ children }: ToasterProviderProps) => {
   const [toasts, setToasts] = useState<ToastsProos[] | []>([]);
 
-  const addToast: ToasterContextType = (message: string, type = 'info') => {
-    const id = new Date().getTime();
-    setToasts([...toasts, { id, message, type }]);
+  const addToast: ToasterContextType = useCallback(
+    (message: string, type = 'info') => {
+      const id = new Date().getTime();
+      setToasts([...toasts, { id, message, type }]);
 
-    setTimeout(() => {
-      setToasts((toasts) => toasts.filter((toast) => toast.id !== id));
-    }, 3000);
-  };
+      setTimeout(() => {
+        setToasts((toasts) => toasts.filter((toast) => toast.id !== id));
+      }, 3000);
+    },
+    [toasts]
+  );
 
   return (
     <ToasterContext.Provider value={addToast}>

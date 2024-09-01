@@ -40,6 +40,17 @@
   transition: background 0.4s;
 }
 
+.dropdown .dropdown__inner hr {
+  margin: 5px;
+  border: 0.1px solid rgba(50, 50, 50, 0.39);
+}
+
+.dropdown .dropdown__inner button {
+  width: 95%;
+  margin: 0px auto 5px auto;
+  font-size: 14px;
+}
+
 .dropdown .dropdown__inner ul li {
   margin-bottom: 0px;
 }

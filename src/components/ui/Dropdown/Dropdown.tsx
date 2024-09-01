@@ -3,16 +3,24 @@ import React, { useEffect, useState } from 'react';
 import './dropdown.css';
 
 interface DropdownOptions {
-  id: string;
-  name: string;
+  _id: string;
+  list_name: string;
   selected: boolean;
 }
 
-const Dropdown = ({ values }: { values: DropdownOptions[] }) => {
+const Dropdown = ({
+  values,
+  openCreateListPopup,
+}: {
+  values: DropdownOptions[];
+  openCreateListPopup: () => void;
+}) => {
   const [dropdownOptions, setDropdownOptions] =
     useState<DropdownOptions[]>(values);
-  const [selectedOption, setSelectedOption] = useState(dropdownOptions[1]);
+  const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
   const [isDropdownActive, setIsDropdownActive] = useState(false);
+
+  console.log(values);
 
   const handleListClick = (event: React.MouseEvent<HTMLElement>) => {
     const element = event.target as HTMLElement;
@@ -23,7 +31,7 @@ const Dropdown = ({ values }: { values: DropdownOptions[] }) => {
     ) {
       setDropdownOptions((prevOptions: DropdownOptions[]) => {
         const newOptions = prevOptions.map((option) => {
-          if (option.name == element.dataset.value) {
+          if (option.list_name == element.dataset.value) {
             setSelectedOption({ ...option });
             return { ...option, selected: true };
           }
@@ -58,19 +66,23 @@ const Dropdown = ({ values }: { values: DropdownOptions[] }) => {
       onClick={() => setIsDropdownActive(!isDropdownActive)}
     >
       <div className='dropdown__inner'>
-        <div className='selected'>{selectedOption.name}</div>
+        <div className='selected'>{selectedOption.list_name}</div>
         <ul onClick={handleListClick}>
           {dropdownOptions.map((option) => {
             return (
               <li
-                key={option.id}
-                data-value={option.name}
+                key={option._id}
+                data-value={option.list_name}
                 className={option.selected ? 'item selected' : 'item'}
               >
-                {option.name}
+                {option.list_name}
               </li>
             );
           })}
+          <hr />
+          <button className='create__list' onClick={openCreateListPopup}>
+            Create List
+          </button>
         </ul>
       </div>
     </div>
