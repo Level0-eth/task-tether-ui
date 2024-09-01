@@ -1,16 +1,26 @@
 import { useState } from 'react';
 
 import apiRequest from '../../utils/apiRequest';
+import { useToaster } from '../../hooks/useToaster';
 
 import './popups.css';
-import { useToaster } from '../../hooks/useToaster';
+
+interface List {
+  _id: string;
+  list_name: string;
+  selected: boolean;
+}
 
 const CreateListPopup = ({
   isOpened,
   setIsOpened,
+  lists,
+  setLists,
 }: {
   isOpened: boolean;
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  lists: List[];
+  setLists: React.Dispatch<React.SetStateAction<List[]>>;
 }) => {
   const [listName, setListName] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -33,6 +43,15 @@ const CreateListPopup = ({
         setIsOpened(false);
         addToast(res.message, 'success');
         setLoading(false);
+
+        setLists([
+          ...lists,
+          {
+            _id: res.data.id,
+            list_name: res.data.name,
+            selected: false,
+          },
+        ]);
       } else {
         throw new Error('Something went wrong');
       }

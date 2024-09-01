@@ -55,12 +55,16 @@
   gap: 10px;
 }
 
-.popup__ctas button {
+.sidebar .popup__ctas button {
   width: fit-content;
   padding: 10px 20px;
 }
 
-.popup__ctas button.popup__cta--save {
+.sidebar .popup__ctas button.popup__cta--save {
   background: green;
   color: white;
+}
+
+.sidebar .popup__ctas button.popup__cta--save:hover {
+  background: rgba(0, 128, 0, 0.693);
 }

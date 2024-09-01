@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
-import Dropdown from '../ui/Dropdown/Dropdown';
 
-import './sidebar.css';
+import Dropdown from '../ui/Dropdown/Dropdown';
 import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
 import CreateListPopup from '../Popups/CreateListPopup';
 
+import './sidebar.css';
+
+interface List {
+  _id: string;
+  list_name: string;
+  selected: boolean;
+}
+
 const Sidebar = () => {
-  const [lists, setLists] = useState([]);
+  const [lists, setLists] = useState<List[]>([]);
   const [isOpened, setIsOpened] = useState(false);
   const addToaster = useToaster();
 
@@ -51,13 +58,18 @@ const Sidebar = () => {
     <div className='sidebar'>
       <p className='sm-heading'>Lists</p>
       {lists.length > 0 ? (
-        <Dropdown values={lists} openCreateListPopup={openCreateListPopup} />
+        <Dropdown lists={lists} setLists={setLists} />
       ) : (
         <button className='create__list' onClick={openCreateListPopup}>
           Create List
         </button>
       )}
-      <CreateListPopup isOpened={isOpened} setIsOpened={setIsOpened} />
+      <CreateListPopup
+        isOpened={isOpened}
+        setIsOpened={setIsOpened}
+        lists={lists}
+        setLists={setLists}
+      />
     </div>
   );
 };

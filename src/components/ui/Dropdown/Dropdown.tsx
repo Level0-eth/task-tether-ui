@@ -9,18 +9,16 @@ interface DropdownOptions {
 }
 
 const Dropdown = ({
-  values,
-  openCreateListPopup,
+  lists,
+  setLists,
 }: {
-  values: DropdownOptions[];
-  openCreateListPopup: () => void;
+  lists: DropdownOptions[];
+  setLists: React.Dispatch<React.SetStateAction<DropdownOptions[]>>;
 }) => {
-  const [dropdownOptions, setDropdownOptions] =
-    useState<DropdownOptions[]>(values);
-  const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
+  const [selectedList, setSelectedList] = useState<
+    DropdownOptions | undefined
+  >();
   const [isDropdownActive, setIsDropdownActive] = useState(false);
-
-  console.log(values);
 
   const handleListClick = (event: React.MouseEvent<HTMLElement>) => {
     const element = event.target as HTMLElement;
@@ -29,10 +27,9 @@ const Dropdown = ({
       element.classList.contains('item') &&
       !element.classList.contains('selected')
     ) {
-      setDropdownOptions((prevOptions: DropdownOptions[]) => {
+      setLists((prevOptions: DropdownOptions[]) => {
         const newOptions = prevOptions.map((option) => {
           if (option.list_name == element.dataset.value) {
-            setSelectedOption({ ...option });
             return { ...option, selected: true };
           }
 
@@ -60,29 +57,34 @@ const Dropdown = ({
     };
   }, [isDropdownActive]);
 
+  useEffect(() => {
+    lists.forEach((list) => {
+      if (list.selected) {
+        console.log(list);
+        setSelectedList(list);
+      }
+    });
+  }, [lists]);
+
   return (
     <div
       className={`dropdown ${isDropdownActive ? 'active' : ''}`}
       onClick={() => setIsDropdownActive(!isDropdownActive)}
     >
       <div className='dropdown__inner'>
-        <div className='selected'>{selectedOption.list_name}</div>
+        <div className='selected'>{selectedList?.list_name}</div>
         <ul onClick={handleListClick}>
-          {dropdownOptions.map((option) => {
+          {lists.map((list) => {
             return (
               <li
-                key={option._id}
-                data-value={option.list_name}
-                className={option.selected ? 'item selected' : 'item'}
+                key={list._id}
+                data-value={list.list_name}
+                className={list.selected ? 'item selected' : 'item'}
               >
-                {option.list_name}
+                {list.list_name}
               </li>
             );
           })}
-          <hr />
-          <button className='create__list' onClick={openCreateListPopup}>
-            Create List
-          </button>
         </ul>
       </div>
     </div>
