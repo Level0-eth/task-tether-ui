@@ -39,3 +39,19 @@
   background: url('../../assets/add.svg') no-repeat;
   background-size: cover;
 }
+
+.sidebar .list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar .list-heading button {
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+}
+
+.sidebar .list-heading button img {
+  width: 100%;
+}

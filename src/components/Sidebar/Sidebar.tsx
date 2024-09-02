@@ -5,6 +5,8 @@ import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
 import CreateListPopup from '../Popups/CreateListPopup';
 
+import PlusIcon from '../../assets/add.svg';
+
 import './sidebar.css';
 
 interface List {
@@ -56,7 +58,16 @@ const Sidebar = () => {
 
   return (
     <div className='sidebar'>
-      <p className='sm-heading'>Lists</p>
+      <div className='list-heading'>
+        <p className='sm-heading'>Lists</p>
+        {lists.length > 0 ? (
+          <button onClick={openCreateListPopup}>
+            <img src={PlusIcon} alt='create-list' />
+          </button>
+        ) : (
+          ''
+        )}
+      </div>
       {lists.length > 0 ? (
         <Dropdown lists={lists} setLists={setLists} />
       ) : (
