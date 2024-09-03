@@ -54,7 +54,8 @@ const Sidebar = () => {
       }
     };
     getLists();
-  }, [addToaster]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='sidebar'>
