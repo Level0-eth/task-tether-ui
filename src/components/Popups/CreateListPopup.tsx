@@ -14,7 +14,6 @@ interface List {
 const CreateListPopup = ({
   isOpened,
   setIsOpened,
-  lists,
   setLists,
 }: {
   isOpened: boolean;
@@ -44,14 +43,16 @@ const CreateListPopup = ({
         addToast(res.message, 'success');
         setLoading(false);
 
-        setLists([
-          ...lists,
-          {
-            _id: res.data.id,
-            list_name: res.data.name,
-            selected: false,
-          },
-        ]);
+        setLists((prev) => {
+          return [
+            ...prev,
+            {
+              _id: res.data.id,
+              list_name: res.data.name,
+              selected: false,
+            },
+          ];
+        });
       } else {
         throw new Error('Something went wrong');
       }
