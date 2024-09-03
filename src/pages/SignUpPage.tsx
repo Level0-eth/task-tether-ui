@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { LoginButton } from '@telegram-auth/react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import Button from '../components/ui/Button/Button';
+import Button from '../components/ui/Button';
 import { useToaster } from '../hooks/useToaster';
 import apiRequest from '../utils/apiRequest';
 

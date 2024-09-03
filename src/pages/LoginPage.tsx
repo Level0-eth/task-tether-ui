@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useToaster } from '../hooks/useToaster';
 import apiRequest from '../utils/apiRequest';
-import Button from '../components/ui/Button/Button';
+import Button from '../components/ui/Button';
 
 import './loginpage.css';
 

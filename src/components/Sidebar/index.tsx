@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Dropdown from '../ui/Dropdown/Dropdown';
+import Dropdown from '../ui/Dropdown';
 import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
 import CreateListPopup from '../Popups/CreateListPopup';
