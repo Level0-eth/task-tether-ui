@@ -58,12 +58,10 @@ const Dropdown = ({
   }, [isDropdownActive]);
 
   useEffect(() => {
-    lists.forEach((list) => {
-      if (list.selected) {
-        console.log(list);
-        setSelectedList(list);
-      }
-    });
+    const selected = lists.find((list) => list.selected);
+    if (selected) {
+      setSelectedList(selected);
+    }
   }, [lists]);
 
   return (
