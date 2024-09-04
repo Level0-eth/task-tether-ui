@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import './dropdown.css';
 
@@ -19,6 +20,7 @@ const Dropdown = ({
     DropdownOptions | undefined
   >();
   const [isDropdownActive, setIsDropdownActive] = useState(false);
+  const [, setSearchParams] = useSearchParams();
 
   const handleListClick = (event: React.MouseEvent<HTMLElement>) => {
     const element = event.target as HTMLElement;
@@ -61,8 +63,11 @@ const Dropdown = ({
     const selected = lists.find((list) => list.selected);
     if (selected) {
       setSelectedList(selected);
+      const newParams = new URLSearchParams();
+      newParams.set('ls', selected._id);
+      setSearchParams(newParams);
     }
-  }, [lists]);
+  }, [lists, setSearchParams]);
 
   return (
     <div
