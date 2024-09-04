@@ -44,6 +44,16 @@ const CreateListPopup = ({
         setLoading(false);
 
         setLists((prev) => {
+          if (prev.length == 0) {
+            return [
+              {
+                _id: res.data.id,
+                list_name: res.data.name,
+                selected: true,
+              },
+            ];
+          }
+
           return [
             ...prev,
             {
