@@ -5,7 +5,7 @@ import LoadingSvg from '../../../assets/loading.gif';
 interface ButtonProps {
   value: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  clickEvent: any;
+  clickEvent?: any;
   loading?: boolean;
   disabled?: boolean;
 }

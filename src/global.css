@@ -79,11 +79,15 @@ body {
 }
 
 .flex.align-start {
-  align-items: start;
+  align-items: flex-start;
 }
 
 .flex.justify-center {
   justify-content: center;
+}
+
+.flex.justify-end {
+  justify-content: flex-end;
 }
 
 .flex.align-center {

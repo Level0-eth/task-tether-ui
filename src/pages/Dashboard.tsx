@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import TaskBoard from '../components/TaskBoard';
 import apiRequest from '../utils/apiRequest';
 import { useToaster } from '../hooks/useToaster';
 
@@ -16,6 +17,7 @@ const Dashboard = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const addToast = useToaster();
   const navigate = useNavigate();
+  const searchparams = useSearchParams();
 
   useEffect(() => {
     const getInfo = async () => {
@@ -47,12 +49,16 @@ const Dashboard = () => {
       <Header user={user} />
       <div className='main flex'>
         <Sidebar />
-        <main
-          className='flex justify-center align-center'
-          style={{ width: 'calc(100% - 224px)' }}
-        >
-          Create a list to get started
-        </main>
+        {searchparams[0].get('ls') ? (
+          <TaskBoard />
+        ) : (
+          <main
+            className='flex justify-center align-center'
+            style={{ width: 'calc(100% - 224px)' }}
+          >
+            Create a list to get started
+          </main>
+        )}
       </div>
     </>
   );
