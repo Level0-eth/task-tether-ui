@@ -4,20 +4,15 @@ import Dropdown from '../ui/Dropdown';
 import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
 import CreateListPopup from '../Popups/CreateListPopup';
+import { useLists } from '../../hooks/useLists';
 
 import PlusIcon from '../../assets/add.svg';
 
 import './sidebar.css';
 
-interface List {
-  _id: string;
-  list_name: string;
-  selected: boolean;
-}
-
 const Sidebar = () => {
-  const [lists, setLists] = useState<List[]>([]);
   const [isOpened, setIsOpened] = useState(false);
+  const { lists, setLists } = useLists();
   const addToaster = useToaster();
 
   const openCreateListPopup = () => {

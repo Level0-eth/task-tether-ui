@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import TaskBoard from '../components/TaskBoard';
 import apiRequest from '../utils/apiRequest';
 import { useToaster } from '../hooks/useToaster';
+import { ListsProvider } from '../contexts/ListContext';
 
 interface UserInfo {
   name: string;
@@ -45,7 +46,7 @@ const Dashboard = () => {
   }, [navigate, addToast]);
 
   return (
-    <>
+    <ListsProvider>
       <Header user={user} />
       <div className='main flex'>
         <Sidebar />
@@ -60,7 +61,7 @@ const Dashboard = () => {
           </main>
         )}
       </div>
-    </>
+    </ListsProvider>
   );
 };
 
