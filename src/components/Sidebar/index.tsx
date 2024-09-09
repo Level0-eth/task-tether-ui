@@ -5,6 +5,7 @@ import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
 import CreateListPopup from '../Popups/CreateListPopup';
 import { useLists } from '../../hooks/useLists';
+import CreateTaskPopup from '../Popups/CreateTaskPopup';
 
 import PlusIcon from '../../assets/add.svg';
 
@@ -12,6 +13,7 @@ import './sidebar.css';
 
 const Sidebar = () => {
   const [isOpened, setIsOpened] = useState(false);
+  const [isCreateTaskOpened, setIsCreateTaskOpened] = useState(false);
   const { lists, setLists } = useLists();
   const addToaster = useToaster();
 
@@ -71,6 +73,18 @@ const Sidebar = () => {
           Create List
         </button>
       )}
+      <button
+        className='addtask__btn'
+        onClick={() => setIsCreateTaskOpened(true)}
+      >
+        <span>
+          Create Task <img src={PlusIcon} alt='' />
+        </span>
+      </button>
+      <CreateTaskPopup
+        isOpened={isCreateTaskOpened}
+        setIsOpened={setIsCreateTaskOpened}
+      />
       <CreateListPopup
         isOpened={isOpened}
         setIsOpened={setIsOpened}

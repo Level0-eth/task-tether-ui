@@ -5,6 +5,7 @@
   border: 1px;
   cursor: pointer;
   font-family: 'Poppins';
+  z-index: 1;
 }
 
 .dropdown .dropdown__inner {
@@ -79,6 +80,11 @@
   transform: translateY(-50%);
   background: url(../../../assets/checked.svg) no-repeat;
   background-size: contain;
+  width: 10px;
+  height: 7px;
+}
+
+.dropdown .dropdown__inner ul li.selected::before {
   width: 12px;
   height: 9px;
 }

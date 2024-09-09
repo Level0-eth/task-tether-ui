@@ -1,10 +1,10 @@
 .popup {
   position: fixed;
   background: white;
-  bottom: 0;
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   padding: 20px;
   z-index: 999;
   animation: 0.4s popupAnim;
@@ -17,7 +17,7 @@
 }
 
 .popup p {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 @keyframes popupAnim {

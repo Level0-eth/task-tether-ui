@@ -55,3 +55,41 @@
 .sidebar .list-heading button img {
   width: 100%;
 }
+
+.sidebar .addtask__btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  background: var(--white-color);
+  color: var(--primary-dark);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 5px;
+  transition: background 0.4s;
+  cursor: pointer;
+  font-family: 'Poppins';
+}
+
+.sidebar .addtask__btn span {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1;
+  padding: 9.5px;
+  background: #f6f6f6;
+  position: relative;
+}
+
+.sidebar .addtask__btn:hover {
+  background: var(--light-hover-color);
+}
+
+.sidebar .addtask__btn img {
+  width: 15px;
+  height: 15px;
+  background: white;
+  padding: 2px;
+  border-radius: 15px;
+}
