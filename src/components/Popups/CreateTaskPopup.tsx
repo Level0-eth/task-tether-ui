@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import apiRequest from '../../utils/apiRequest';
 import { useToaster } from '../../hooks/useToaster';
@@ -27,6 +28,7 @@ const CreateTaskPopup = ({
   });
   const [loading, setLoading] = useState(false);
   const addToast = useToaster();
+  const searchParams = useSearchParams();
 
   const handleInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const current = e.target;
@@ -39,20 +41,29 @@ const CreateTaskPopup = ({
     });
   };
 
-  useEffect(() => {
-    console.log(task);
-  }, [task]);
-
   const createTask = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
+      const listId = searchParams[0].get('ls');
 
-      const res = await apiRequest('/v1/task/createTask', task, headers);
+      const res = await apiRequest(
+        '/v1/task/createTask/' + listId,
+        task,
+        headers
+      );
 
       if (res.message == 'Task is added') {
-        console.log('added');
+        addToast('Task is created');
+        setLoading(false);
+        setTask({
+          _id: '',
+          title: '',
+          description: '',
+          labels: [],
+        });
+        setIsOpened(false);
       } else {
         throw new Error('Something went wrong');
       }

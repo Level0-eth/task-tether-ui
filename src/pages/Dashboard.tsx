@@ -43,7 +43,9 @@ const Dashboard = () => {
       }
     };
     getInfo();
-  }, [navigate, addToast]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ListsProvider>
